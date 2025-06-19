@@ -46,7 +46,7 @@ const SidebarContent: React.FC<SidebarContentProps> = ({
       <Button
         key={item.key}
         variant={item.key === active ? 'secondary' : 'ghost'}
-        className="flex items-center justify-center w-full space-x-2 hover:bg-gray-200 rounded-md transition-colors"
+        className="flex items-center justify-start w-full space-x-2 hover:bg-gray-200 rounded-md transition-colors px-2 py-2"
         onClick={() => onChange(item.key)}
       >
         <item.icon className="h-4 w-4" />
@@ -55,7 +55,7 @@ const SidebarContent: React.FC<SidebarContentProps> = ({
     ))}
     <Button
       variant="ghost"
-      className="flex items-center justify-center w-full space-x-2 hover:bg-gray-200 rounded-md transition-colors mt-auto"
+      className="flex items-center justify-start w-full space-x-2 hover:bg-gray-200 rounded-md transition-colors mt-auto px-2 py-2"
       onClick={onToggle}
     >
       {collapsed ? (
