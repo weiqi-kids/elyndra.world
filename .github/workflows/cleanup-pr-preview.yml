@@ -1,0 +1,42 @@
+name: Cleanup PR Preview
+
+on:
+  pull_request:
+    types:
+      - closed
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Remove preview directory
+        run: node ./scripts/remove-preview.mjs
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}"
+            git push origin gh-pages
+          else
+            echo "No preview directory to remove."
+          fi
