@@ -5,20 +5,21 @@ import { Input } from "@/components/ui/input";
 import { Search } from 'lucide-react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+const base = import.meta.env.BASE_URL;
 const mockMessages: Message[] = [
   {
     id: 1,
     content: 'Hi there! Welcome to the Magic Campus.',
     time: '09:00',
     sender: 'Professor Oak',
-    avatar: 'https://placekitten.com/50/50',
+    avatar: `${base}avatars/user2.png`,
   },
   {
     id: 2,
     content: 'Thank you professor!',
     time: '09:02',
     sender: 'You',
-    avatar: 'https://placekitten.com/52/52',
+    avatar: `${base}avatars/user3.png`,
     self: true,
     readBy: 3,
   },

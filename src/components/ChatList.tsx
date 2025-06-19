@@ -15,6 +15,7 @@ export interface Conversation {
   avatar: string;
 }
 
+const base = import.meta.env.BASE_URL;
 const mockConversations: Conversation[] = [
   {
     id: 1,
@@ -22,7 +23,7 @@ const mockConversations: Conversation[] = [
     lastMessage: 'Hey everyone, meeting today at 5PM in the main hall.',
     time: '10:24',
     unread: 3,
-    avatar: 'https://placekitten.com/40/40',
+    avatar: `${base}avatars/user1.png`,
   },
   {
     id: 2,
@@ -30,7 +31,7 @@ const mockConversations: Conversation[] = [
     lastMessage: 'Please submit your assignments before Friday. Long message example to show truncation in the list.',
     time: '09:10',
     unread: 0,
-    avatar: 'https://placekitten.com/41/41',
+    avatar: `${base}avatars/user2.png`,
   },
 ];
 

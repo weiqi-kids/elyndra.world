@@ -17,8 +17,6 @@ jobs:
         with:
           node-version: 18
       - run: npm install
-      # The built site is served under /elyndra.world/pr-<PR_NUMBER> on GitHub Pages
-      # so we set the Vite base path accordingly
       - run: BASE=/elyndra.world/pr-${{ github.event.pull_request.number }}/ npm run build
       - uses: actions/upload-artifact@v4
         with:
