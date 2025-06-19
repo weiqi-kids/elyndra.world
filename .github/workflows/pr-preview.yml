@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm ci
+      - run: npm install
       - run: BASE=/pr-${{ github.event.pull_request.number }}/ npm run build
       - uses: actions/upload-artifact@v4
         with:
