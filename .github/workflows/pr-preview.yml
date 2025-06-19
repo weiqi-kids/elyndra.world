@@ -18,7 +18,7 @@ jobs:
           node-version: 18
       - run: npm ci
       - run: BASE=/pr-${{ github.event.pull_request.number }}/ npm run build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
