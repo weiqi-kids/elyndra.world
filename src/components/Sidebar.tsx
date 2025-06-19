@@ -32,7 +32,7 @@ const SidebarContent: React.FC<SidebarProps> = ({ active, onChange }) => (
       <Button
         key={item.key}
         variant={item.key === active ? 'secondary' : 'ghost'}
-        className="flex items-center justify-center w-full space-x-2 hover:bg-gray-200 rounded-md transition-colors"
+        className="flex items-center justify-start w-full space-x-2 hover:bg-gray-200 rounded-md transition-colors"
         onClick={() => onChange(item.key)}
       >
         <item.icon className="h-4 w-4" />
