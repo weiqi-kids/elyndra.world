@@ -1,0 +1,74 @@
+name: Supabase Initial Setup
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: '輸入 "yes" 確認執行初始化'
+        required: true
+        type: string
+
+jobs:
+  init:
+    name: Initialize Supabase Project
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'yes'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link Supabase Project
+        run: |
+          supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_ID }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Push Database Schema
+        run: |
+          echo "📦 Pushing database migrations..."
+          supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Generate TypeScript Types
+        run: |
+          echo "📝 Generating TypeScript types..."
+          supabase gen types typescript --linked > src/types/database.generated.ts
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Commit Generated Types
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: add generated database types'
+          file_pattern: 'src/types/database.generated.ts'
+
+      - name: Summary
+        run: |
+          echo "## ✅ Supabase 初始化完成！" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 已完成項目：" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 資料表建立" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ RLS 政策設定" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Storage Buckets 建立" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 資料庫函數和觸發器" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ TypeScript 類型產生" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 還需要手動設定：" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔐 Google OAuth (Dashboard → Authentication → Providers)" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔐 Line OAuth (Dashboard → Authentication → Providers)" >> $GITHUB_STEP_SUMMARY
